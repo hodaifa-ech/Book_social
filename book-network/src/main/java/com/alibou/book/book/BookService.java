@@ -24,7 +24,7 @@ public class BookService {
 
     public BookResponse findById(Integer bookId) {
         return bookRepository.findById(bookId)
-                .map(bookMapper:: )
+                .map(bookMapper::toBookResponse)
                 .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
     }
 
