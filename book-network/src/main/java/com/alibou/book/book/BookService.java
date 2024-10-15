@@ -2,6 +2,7 @@ package com.alibou.book.book;
 
 
 import com.alibou.book.user.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
@@ -20,4 +21,11 @@ public class BookService {
          book.setOwner(user);
         return bookRepository.save(book).getId();
     }
+
+    public BookResponse findById(Integer bookId) {
+        return bookRepository.findById(bookId)
+                .map(bookMapper:: )
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+    }
+
 }
