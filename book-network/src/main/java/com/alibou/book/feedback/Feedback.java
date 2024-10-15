@@ -1,6 +1,7 @@
 package com.alibou.book.feedback;
 
 
+import com.alibou.book.book.Book;
 import com.alibou.book.common.BaseEntity;
 import jakarta.persistence.*;
 
@@ -16,7 +17,9 @@ public class Feedback extends BaseEntity {
 
     private String comment;
 
-
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
 }
 

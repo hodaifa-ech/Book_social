@@ -2,7 +2,9 @@ package com.alibou.book.history;
 
 
 
+import com.alibou.book.book.Book;
 import com.alibou.book.common.BaseEntity;
+import com.alibou.book.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +21,12 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class BookTransactionHistory extends BaseEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
 
     private boolean returned;
