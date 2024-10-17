@@ -3,6 +3,7 @@ package com.alibou.book.book;
 
 import com.alibou.book.common.PageResponse;
 
+import com.alibou.book.exception.OperationNotPermittedException;
 import com.alibou.book.history.BookTransactionHistory;
 import com.alibou.book.history.BookTransactionHistoryRepository;
 import com.alibou.book.user.User;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.alibou.book.book.BookSpecification.withOwnerId;
 
@@ -114,5 +116,16 @@ public class BookService {
                 allBorrowedBooks.isFirst(),
                 allBorrowedBooks.isLast()
         );
+    }
+    public Integer updateShareableStatus(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        if (!Objects.equals(book.getCreatedBy(), connectedUser.getName())) {
+            throw new OperationNotPermittedException("You cannot update others books shareable status");
+        }
+        book.setShareable(!book.isShareable());
+        bookRepository.save(book);
+        return bookId;
     }
 }
