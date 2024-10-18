@@ -4,6 +4,7 @@ package com.alibou.book.book;
 import com.alibou.book.common.PageResponse;
 
 import com.alibou.book.exception.OperationNotPermittedException;
+import com.alibou.book.file.FileStorageService;
 import com.alibou.book.history.BookTransactionHistory;
 import com.alibou.book.history.BookTransactionHistoryRepository;
 import com.alibou.book.user.User;
@@ -31,7 +32,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private  final BookTransactionHistoryRepository transactionHistoryRepository;
-
+    private final FileStorageService fileStorageService;
 
     public Integer save(BookRequest request, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
@@ -204,5 +205,15 @@ public class BookService {
       bookTransactionHistory.setReturnApproved(true);
       return transactionHistoryRepository.save(bookTransactionHistory).getId();
 
+    }
+
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+         User user = ((User) connectedUser.getPrincipal());
+        var profilePicture = fileStorageService.saveFile(file, connectedUser.getName());
+        book.setBookCover(profilePicture);
+        bookRepository.save(book);
     }
 }
