@@ -34,6 +34,11 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 description = "PROD ENV",
                 url = "https://aliboucoding.com/course"
         )
-},
+}, security = {
+        @SecurityRequirement(
+                name = "bearerAuth"
+        )
+}
+)
 public class OpenApiConfig {
 }
