@@ -25,6 +25,15 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "https://some-url.com"
                 ),
                 termsOfService = "Terms of service"
+        ),  servers = {
+        @Server(
+                description = "Local ENV",
+                url = "http://localhost:8088/api/v1"
         ),
+        @Server(
+                description = "PROD ENV",
+                url = "https://aliboucoding.com/course"
+        )
+},
 public class OpenApiConfig {
 }
