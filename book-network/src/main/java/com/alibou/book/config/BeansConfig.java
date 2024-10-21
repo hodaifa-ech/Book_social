@@ -1,6 +1,7 @@
 package com.alibou.book.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -40,4 +41,5 @@ public class BeansConfig {
     public PasswordEncoder passwordEncoder(){
        return new BCryptPasswordEncoder();
     }
+   
 }
