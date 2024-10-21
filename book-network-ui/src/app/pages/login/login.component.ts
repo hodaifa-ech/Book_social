@@ -23,12 +23,16 @@ export class LoginComponent {
       body: this.authRequest
     }).subscribe({
       next: (res) => {
-        // Save the token and navigate to the 'books' page
+
         this.router.navigate(['books']);
       },
       error: (err) => {
         console.log(err);
-        this.errorMsg.push('Authentication failed. Please try again.'); // Add an error message
+        if (err.error.validationErrors) {
+          this.errorMsg = err.error.validationErrors;
+        } else {
+          this.errorMsg.push(err.error.errorMsg);
+        }
       }
     });
   }
