@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './pages/login/login.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
+import {BookModule} from './modules/book/book.module';
 
 const routes: Routes = [
 
@@ -16,7 +17,11 @@ const routes: Routes = [
   },
   {
     path: 'activate-account',
-    component : ActivateAccountComponent
+    loadChildren:() => import('./modules/book/book.module').then(m => m.BookModule)
+  },
+  {
+    path: 'book',
+    component : BookModule
   }
 ];
 
