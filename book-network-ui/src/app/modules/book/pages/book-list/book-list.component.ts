@@ -3,6 +3,7 @@ import {BookService} from '../../../../services/services/book.service';
 import {Router} from '@angular/router';
 import {BookResponse} from '../../../../services/models/book-response';
 import {PageResponseBookResponse} from '../../../../services/models/page-response-book-response';
+import {borrowBook} from '../../../../services/fn/book/borrow-book';
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -38,5 +39,56 @@ export class BookListComponent implements OnInit{
             .map((x, i) => i);
         }
       });
+  }
+
+  gotToPage(page: number) {
+    this.page = page;
+    this.findAllBooks();
+  }
+
+  goToFirstPage() {
+    this.page = 0;
+    this.findAllBooks();
+  }
+
+  goToPreviousPage() {
+    this.page --;
+    this.findAllBooks();
+  }
+
+  goToLastPage() {
+    this.page = this.bookResponse.totalPages as number - 1;
+    this.findAllBooks();
+  }
+
+  goToNextPage() {
+    this.page++;
+    this.findAllBooks();
+  }
+
+  get isLastPage() {
+    return this.page === this.bookResponse.totalPages as number - 1;
+  }
+
+  borrowBook(book: BookResponse) {
+    this.message = '';
+    this.level = 'success';
+    this.bookService.borrowBook({
+      'book-id': book.id as number
+    }).subscribe({
+      next: () => {
+        this.level = 'success';
+        this.message = 'Book successfully added to your list';
+      },
+      error: (err) => {
+        console.log(err);
+        this.level = 'error';
+        this.message = err.error.error;
+      }
+    });
+  }
+
+  displayBookDetails(book: BookResponse) {
+    this.router.navigate(['books', 'details', book.id]);
   }
 }
