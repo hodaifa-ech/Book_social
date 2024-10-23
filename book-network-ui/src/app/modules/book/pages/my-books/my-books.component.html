@@ -1,10 +1,34 @@
-<h3>Books list</h3>
-<div
-  *ngIf="message"
-  class="alert "
-  [class.alert-danger]="level==='error'"
-  [class.alert-success]="level==='success'"
-  role="alert"
->
-  <p>{{message}}</p>
+<hr>
+<div class="d-flex justify-content-start gap-2 flex-wrap">
+  <app-book-card
+    *ngFor="let book of bookResponse.content"
+    [book]="book"
+    (borrow)="borrowBook($event)"
+    (details)="displayBookDetails($event)"
+  ></app-book-card>
 </div>
+<div class="d-flex justify-content-center mt-3">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a
+          (click)="goToFirstPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Previous"
+          [class.disabled]="page === 0"
+        >
+          <i class="fa-solid fa-angles-left"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a
+          (click)="goToPreviousPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Previous"
+          [class.disabled]="page === 0"
+        >
+          <i class="fa-solid fa-angle-left"></i>
+        </a>
+      </li>
